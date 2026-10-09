@@ -4,24 +4,19 @@ import tailwindcss from "@tailwindcss/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import netlify from "@netlify/vite-plugin-tanstack-start";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import { nitro } from "nitro/vite";
 
 export default defineConfig({
   plugins: [
-    tanstackStart({
-      prerender: {
-        enabled: true,
-        crawlLinks: true,
-      },
-    }),
-    nitro(),
+    tanstackStart({ prerender: { enabled: true, crawlLinks: false } }),
     react(),
     tailwindcss(),
     tsconfigPaths(),
     netlify(),
   ],
-
   resolve: {
     tsconfigPaths: true,
+  },
+  server: {
+    port: 3000,
   },
 });

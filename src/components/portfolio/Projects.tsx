@@ -1,4 +1,4 @@
-import { ArrowUpRight, Github } from "lucide-react";
+import { ArrowUpRight, Check, Github } from "lucide-react";
 import { PROJECTS, type Project } from "@/data/portfolio";
 import { ProjectMock } from "./Mocks";
 import { tiltHandlers } from "./hooks";
@@ -24,6 +24,20 @@ function Tags({ tags }: { tags: string[] }) {
       {tags.map((t) => (
         <li key={t} className="rounded-full border border-line px-3 py-1 text-[13px] text-mist">
           {t}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Liste de fonctionnalités avec une puce en forme de coche : le detail « produit » du projet. */
+function Features({ items }: { items: string[] }) {
+  return (
+    <ul className="space-y-2">
+      {items.map((f) => (
+        <li key={f} className="flex items-start gap-2.5 text-[14.5px] leading-snug text-mist">
+          <Check className="mt-0.5 h-4 w-4 shrink-0 text-leaf" />
+          {f}
         </li>
       ))}
     </ul>
@@ -67,11 +81,36 @@ function Featured({ p }: { p: Project }) {
         </div>
         <h3 className="h-card text-[clamp(2.4rem,4.6vw,3.8rem)]">{p.name}</h3>
         <p className="mt-2 text-[1.1rem] font-medium text-ivoire/90">{p.short}</p>
-        <p className="mt-5 max-w-[30rem] leading-relaxed text-mist">{p.desc}</p>
+
+        {p.problem && p.solution ? (
+          <div className="mt-6 max-w-[30rem] space-y-4">
+            <div>
+              <p className="text-[13px] font-semibold uppercase tracking-wide text-gold">Le problème</p>
+              <p className="mt-1.5 leading-relaxed text-mist">{p.problem}</p>
+            </div>
+            <div>
+              <p className="text-[13px] font-semibold uppercase tracking-wide text-gold">La solution</p>
+              <p className="mt-1.5 leading-relaxed text-mist">{p.solution}</p>
+            </div>
+          </div>
+        ) : (
+          <p className="mt-5 max-w-[30rem] leading-relaxed text-mist">{p.desc}</p>
+        )}
+
+        {p.features && (
+          <div className="mt-6 max-w-[30rem]">
+            <p className="mb-3 text-[13px] font-semibold uppercase tracking-wide text-gold">Fonctionnalités clés</p>
+            <Features items={p.features} />
+          </div>
+        )}
+
         <div className="mt-7">
           <Tags tags={p.tags} />
         </div>
-        <div className="mt-9">
+
+        <p className="mt-6 max-w-[30rem] text-[14px] italic leading-relaxed text-mist/80">{p.role}</p>
+
+        <div className="mt-8">
           <Links p={p} />
         </div>
       </div>
@@ -100,10 +139,20 @@ function Card({ p }: { p: Project }) {
         </div>
         <h3 className="h-card text-[1.7rem]">{p.name}</h3>
         <p className="mt-1 text-[15px] font-medium text-ivoire/90">{p.short}</p>
-        <p className="mt-4 text-[15px] leading-relaxed text-mist">{p.desc}</p>
+        <p className="mt-4 text-[15px] leading-relaxed text-mist">{p.solution ?? p.desc}</p>
+
+        {p.features && (
+          <div className="mt-4">
+            <Features items={p.features.slice(0, 3)} />
+          </div>
+        )}
+
         <div className="mt-5">
           <Tags tags={p.tags} />
         </div>
+
+        <p className="mt-5 text-[13.5px] italic leading-relaxed text-mist/80">{p.role}</p>
+
         <div className="mt-auto pt-7">
           <Links p={p} />
         </div>

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowUp, Menu, X } from "lucide-react";
-import { NAV, PROFILE } from "@/data/portfolio";
+import { ArrowUp, Download, FileText, Menu, X } from "lucide-react";
+import { CV, NAV, PROFILE } from "@/data/portfolio";
 
 /** Marque : un losange doré avec un cœur creux, comme dans le champ tissé du hero. */
 function Mark() {
@@ -123,6 +123,15 @@ export function Nav() {
           </ul>
 
           <div className="flex items-center gap-3">
+            <a
+              href={CV.href}
+              target="_blank"
+              rel="noreferrer"
+              className="hidden items-center gap-1.5 text-[14px] font-medium text-mist transition-colors hover:text-gold md:inline-flex"
+            >
+              <FileText className="h-4 w-4" />
+              CV
+            </a>
             <a href="#contact" className="btn btn-gold hidden !h-10 !px-5 !text-[14px] sm:inline-flex">
               Me contacter
             </a>
@@ -161,7 +170,22 @@ export function Nav() {
             </li>
           ))}
         </ul>
-        <div className="px-6 pt-8">
+        <div className="flex flex-col gap-3 px-6 pt-8">
+          <div className="flex gap-3">
+            <a
+              href={CV.href}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => setOpen(false)}
+              className="btn btn-ghost flex-1"
+            >
+              <FileText className="h-4 w-4" />
+              Voir mon CV
+            </a>
+            <a href={CV.href} download={CV.fileName} aria-label="Télécharger le CV" className="btn btn-ghost !w-12 !px-0">
+              <Download className="h-[18px] w-[18px]" />
+            </a>
+          </div>
           <a href="#contact" onClick={() => setOpen(false)} className="btn btn-gold w-full">
             Me contacter
           </a>
