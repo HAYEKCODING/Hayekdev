@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
-import { ArrowDown, Github, Linkedin } from "lucide-react";
+import { ArrowDown, Download, FileText, Github, Linkedin } from "lucide-react";
 import avatar from "@/assets/photo_2026-07-22_13-43-49.jpg";
-import { PROFILE, STATS, TYPED } from "@/data/portfolio";
+import { CV, PROFILE, STATS, TYPED } from "@/data/portfolio";
 import { WovenField } from "./WovenField";
 import { KineticName } from "./KineticName";
 import { Counter } from "./Counter";
@@ -112,8 +112,32 @@ export function Hero() {
             </a>
           </div>
 
+          <div
+            className="hero-rise mt-6 flex items-center gap-3 text-[14px]"
+            style={{ "--d": "1.38s" } as React.CSSProperties}
+          >
+            <a
+              href={CV.href}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 font-medium text-mist transition-colors hover:text-gold"
+            >
+              <FileText className="h-4 w-4" />
+              Voir mon CV
+            </a>
+            <span className="dia text-line" />
+            <a
+              href={CV.href}
+              download={CV.fileName}
+              className="inline-flex items-center gap-1.5 font-medium text-mist transition-colors hover:text-gold"
+            >
+              <Download className="h-4 w-4" />
+              Télécharger
+            </a>
+          </div>
+
           <dl
-            className="hero-rise mt-14 grid max-w-[36rem] grid-cols-2 gap-x-6 gap-y-7 border-t border-line pt-7 sm:grid-cols-4"
+            className="hero-rise mt-10 grid max-w-[36rem] grid-cols-2 gap-x-6 gap-y-7 border-t border-line pt-7 sm:grid-cols-4"
             style={{ "--d": "1.45s" } as React.CSSProperties}
           >
             {STATS.map((s) => (

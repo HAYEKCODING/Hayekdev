@@ -1,11 +1,12 @@
-import { Github, Linkedin, Mail } from "lucide-react";
-import { PROFILE } from "@/data/portfolio";
+import { FileText, Github, Linkedin, Mail } from "lucide-react";
+import { CV, PROFILE } from "@/data/portfolio";
 
 export function Footer() {
   const links = [
     { href: PROFILE.github, label: "GitHub", Icon: Github },
     { href: PROFILE.linkedin, label: "LinkedIn", Icon: Linkedin },
     { href: `mailto:${PROFILE.email}`, label: "Email", Icon: Mail },
+    { href: CV.href, label: "CV", Icon: FileText },
   ];
   return (
     <footer className="border-t border-line">
@@ -15,14 +16,17 @@ export function Footer() {
             <span className="absolute inset-0 rotate-45 bg-gold" />
             <span className="absolute inset-[4px] rotate-45 bg-night" />
           </span>
-          <span className="font-display text-lg font-bold [font-stretch:88%]">{PROFILE.shortName}</span>
+          <div className="leading-tight">
+            <span className="block font-display text-lg font-bold [font-stretch:88%]">{PROFILE.shortName}</span>
+            <span className="block text-[12px] tracking-[0.14em] text-mist">{PROFILE.brand}</span>
+          </div>
         </div>
         <ul className="flex items-center gap-2">
           {links.map(({ href, label, Icon }) => (
             <li key={label}>
               <a
                 href={href}
-                target={href.startsWith("http") ? "_blank" : undefined}
+                target={href.startsWith("http") || href.endsWith(".pdf") ? "_blank" : undefined}
                 rel="noreferrer"
                 aria-label={label}
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-mist transition-colors hover:border-gold hover:text-gold"

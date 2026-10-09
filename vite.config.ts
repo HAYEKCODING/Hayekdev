@@ -7,18 +7,12 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 
 export default defineConfig({
   plugins: [
-    tanstackStart({
-      prerender: {
-        enabled: true,
-        crawlLinks: true,
-      },
-    }),
+    tanstackStart({ prerender: { enabled: true, crawlLinks: false } }),
     react(),
     tailwindcss(),
     tsconfigPaths(),
     netlify(),
   ],
-
   resolve: {
     tsconfigPaths: true,
   },

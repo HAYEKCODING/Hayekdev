@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { ABOUT, PROFILE } from "@/data/portfolio";
+import { DevStatus } from "./DevStatus";
 import { useScrollProgress } from "./hooks";
 
 export function About() {
@@ -10,8 +11,11 @@ export function About() {
   return (
     <section id="about" className="mx-auto max-w-[1200px] px-6 py-28 lg:px-10 lg:py-40">
       <div className="grid grid-cols-[minmax(0,1fr)] gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
-        <div>
-          <h2 className="h-section lg:sticky lg:top-28">{ABOUT.title}</h2>
+        <div className="lg:sticky lg:top-28">
+          <h2 className="h-section">{ABOUT.title}</h2>
+          <div className="mt-10 hidden lg:block">
+            <DevStatus />
+          </div>
         </div>
 
         <div>
@@ -36,6 +40,19 @@ export function About() {
               Nom complet : <span className="text-ivoire">{PROFILE.fullName}</span>
             </p>
           </div>
+
+          <ul className="mt-8 flex flex-wrap gap-2">
+            {ABOUT.interests.map((it) => (
+              <li key={it} className="rounded-full border border-line px-3 py-1 text-[13px] text-mist">
+                {it}
+              </li>
+            ))}
+            {ABOUT.languages.map((l) => (
+              <li key={l.lang} className="rounded-full border border-line px-3 py-1 text-[13px] text-mist">
+                {l.lang} · {l.level}
+              </li>
+            ))}
+          </ul>
 
           <dl className="mt-14 grid grid-cols-[minmax(0,1fr)] gap-8 border-t border-line pt-8 sm:grid-cols-3">
             {ABOUT.values.map((v) => (
