@@ -1,72 +1,65 @@
-import { ArrowUpRight, Check } from "lucide-react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type KeyboardEvent,
+  type PointerEvent,
+  type RefObject,
+} from "react";
+import { ArrowUpRight, Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { PROJECTS, type Project } from "@/data/portfolio";
 import { ProjectMock } from "./Mocks";
-import { tiltHandlers } from "./hooks";
+import { PortfolioDecorations } from "./PortfolioDecorations";
 
 const STATUS_STYLE: Record<Project["status"], string> = {
-  "En cours": "bg-gold/15 text-gold",
-  Livré: "bg-leaf/15 text-leaf",
-  "Expérience pro": "bg-cobalt/15 text-cobalt",
+  "En cours": "project-status--progress",
+  Livré: "project-status--delivered",
+  "Expérience pro": "project-status--experience",
 };
 
 function Status({ status }: { status: Project["status"] }) {
   return (
-    <span
-      className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[13px] font-medium ${STATUS_STYLE[status]}`}
-    >
-      <span className="h-1.5 w-1.5 rounded-full bg-current" />
+    <span className={`project-status ${STATUS_STYLE[status]}`}>
+      <span className="project-status-dot" aria-hidden />
       {status}
     </span>
   );
 }
 
 function Tags({ tags }: { tags: string[] }) {
+  if (tags.length === 0) {
+    return <p className="project-tags-empty">Technologies non renseignées</p>;
+  }
+
   return (
-    <ul className="flex flex-wrap gap-2">
-      {tags.map((t) => (
-        <li key={t} className="rounded-full border border-line px-3 py-1 text-[13px] text-mist">
-          {t}
-        </li>
+    <ul className="project-tags">
+      {tags.map((tag) => (
+        <li key={tag}>{tag}</li>
       ))}
     </ul>
   );
 }
 
-/** Liste de fonctionnalités avec une puce en forme de coche : le detail « produit » du projet. */
-function Features({ items }: { items: string[] }) {
-  return (
-    <ul className="space-y-2">
-      {items.map((f) => (
-        <li key={f} className="flex items-start gap-2.5 text-[14.5px] leading-snug text-mist">
-          <Check className="mt-0.5 h-4 w-4 shrink-0 text-leaf" />
-          {f}
-        </li>
-      ))}
-    </ul>
-  );
-}
+function ProjectPreview({ project, visible }: { project: Project; visible: boolean }) {
+  if (!visible) {
+    return <div className="project-preview project-preview--placeholder" aria-hidden />;
+  }
 
-function Links({ p }: { p: Project }) {
-  if (!p.live) return null;
-
-  return (
-    <a href={p.live} target="_blank" rel="noreferrer" className="btn btn-gold !h-11">
-      Voir le site
-      <ArrowUpRight className="h-4 w-4" />
-    </a>
-  );
-}
-
-function ProjectPreview({ p }: { p: Project }) {
-  if (!p.live) {
-    return <ProjectMock kind={p.mock} label={`Aperçu illustratif de l'interface ${p.name}`} />;
+  if (!project.live) {
+    return (
+      <ProjectMock
+        kind={project.mock}
+        label={`Aperçu illustratif de l'expérience ${project.name}`}
+      />
+    );
   }
 
   return (
     <div className="project-preview">
       <iframe
-        src={p.live}
-        title={`Aperçu de l'interface ${p.name}`}
+        src={project.live}
+        title={`Aperçu de l'interface ${project.name}`}
         loading="lazy"
         referrerPolicy="no-referrer"
       />
@@ -74,120 +67,225 @@ function ProjectPreview({ p }: { p: Project }) {
   );
 }
 
-function Featured({ p }: { p: Project }) {
-  const h = tiltHandlers();
+function DiscoverLink({ project, active }: { project: Project; active: boolean }) {
+  if (!active) {
+    return (
+      <span className="btn btn-primary project-discover" aria-hidden="true">
+        Découvrir le projet
+        <ArrowUpRight className="h-4 w-4" />
+      </span>
+    );
+  }
+
+  if (!project.live) {
+    return (
+      <button
+        type="button"
+        className="btn btn-ghost project-discover"
+        disabled
+        aria-label={`${project.name} : aucune démo publique`}
+      >
+        Découvrir le projet
+        <ArrowUpRight className="h-4 w-4" />
+      </button>
+    );
+  }
+
   return (
-    <article
-      {...h}
-      className="spot grid grid-cols-[minmax(0,1fr)] gap-10 overflow-hidden rounded-[28px] border border-line bg-deep/70 p-6 sm:p-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-14 lg:p-14"
+    <a
+      href={project.live}
+      target="_blank"
+      rel="noreferrer"
+      className="btn btn-primary project-discover"
     >
-      <div className="flex flex-col justify-center">
-        <div className="mb-7 flex flex-wrap items-center gap-3">
-          <Status status={p.status} />
-          <span className="text-[14px] text-mist">Projet phare</span>
-        </div>
-        <h3 className="h-card text-[clamp(2.4rem,4.6vw,3.8rem)]">{p.name}</h3>
-        <p className="mt-2 text-[1.1rem] font-medium text-ivoire/90">{p.short}</p>
-
-        {p.problem && p.solution ? (
-          <div className="mt-6 max-w-[30rem] space-y-4">
-            <div>
-              <p className="text-[13px] font-semibold uppercase tracking-wide text-gold">
-                Le problème
-              </p>
-              <p className="mt-1.5 leading-relaxed text-mist">{p.problem}</p>
-            </div>
-            <div>
-              <p className="text-[13px] font-semibold uppercase tracking-wide text-gold">
-                La solution
-              </p>
-              <p className="mt-1.5 leading-relaxed text-mist">{p.solution}</p>
-            </div>
-          </div>
-        ) : (
-          <p className="mt-5 max-w-[30rem] leading-relaxed text-mist">{p.desc}</p>
-        )}
-
-        {p.features && (
-          <div className="mt-6 max-w-[30rem]">
-            <p className="mb-3 text-[13px] font-semibold uppercase tracking-wide text-gold">
-              Fonctionnalités clés
-            </p>
-            <Features items={p.features} />
-          </div>
-        )}
-
-        <div className="mt-7">
-          <Tags tags={p.tags} />
-        </div>
-
-        <p className="mt-6 max-w-[30rem] text-[14px] italic leading-relaxed text-mist/80">
-          {p.role}
-        </p>
-
-        <div className="mt-8">
-          <Links p={p} />
-        </div>
-      </div>
-
-      <div className="flex min-w-0 flex-col justify-center">
-        <div data-tilt className="tilt">
-          <ProjectPreview p={p} />
-        </div>
-        <p className="mt-4 text-center text-[13px] text-mist/80">
-          {p.live ? "Aperçu de l'interface en ligne" : "Aperçu illustratif de l'interface"}
-        </p>
-      </div>
-    </article>
+      Découvrir le projet
+      <ArrowUpRight className="h-4 w-4" />
+    </a>
   );
 }
 
-function Card({ p }: { p: Project }) {
-  const h = tiltHandlers();
+function ProjectCard({
+  project,
+  offset,
+  onSelect,
+  activeCardRef,
+}: {
+  project: Project;
+  offset: number;
+  onSelect: () => void;
+  activeCardRef: RefObject<HTMLElement | null>;
+}) {
+  const distance = Math.abs(offset);
+  const isActive = distance === 0;
+  const isAdjacent = distance === 1;
+  const style: CSSProperties = {
+    zIndex: 10 - distance,
+    opacity: distance <= 1 ? 1 - distance * 0.18 : 0,
+    transform: `translate3d(calc(-50% + ${offset * 78}%), 0, ${-distance * 90}px) rotateY(${-offset * 7}deg) scale(${1 - distance * 0.1})`,
+  };
+
+  function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
+    if (!isAdjacent || (event.key !== "Enter" && event.key !== " ")) return;
+    event.preventDefault();
+    onSelect();
+  }
+
   return (
     <article
-      {...h}
-      className="spot flex flex-col rounded-[22px] border border-line bg-deep/70 p-5 sm:p-6"
+      ref={isActive ? activeCardRef : undefined}
+      className={`project-carousel-card${isActive ? " is-active" : ""}${isAdjacent ? " is-adjacent" : ""}${!isActive && !isAdjacent ? " is-hidden" : ""}`}
+      style={style}
+      role={isActive ? "group" : "button"}
+      aria-label={
+        isActive
+          ? `${project.name}, projet ${project.status}`
+          : `Afficher le projet ${project.name}`
+      }
+      aria-roledescription={isActive ? "carte de projet" : undefined}
+      aria-current={isActive ? "true" : undefined}
+      aria-hidden={!isActive && !isAdjacent}
+      inert={!isActive && !isAdjacent}
+      tabIndex={isAdjacent ? 0 : -1}
+      onClick={() => {
+        if (!isActive) onSelect();
+      }}
+      onKeyDown={handleKeyDown}
     >
-      <div data-tilt className="tilt [&_.mock]:min-h-[240px]">
-        <ProjectPreview p={p} />
+      <div className="project-carousel-visual">
+        <ProjectPreview project={project} visible={isActive || isAdjacent} />
+        <p className="project-preview-caption">
+          {project.live ? "Aperçu de l'interface en ligne" : "Aperçu illustratif"}
+        </p>
       </div>
-      <div className="mt-6 flex flex-1 flex-col">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-          <Status status={p.status} />
-          <span className="text-[13px] text-mist">{p.type}</span>
-        </div>
-        <h3 className="h-card text-[1.7rem]">{p.name}</h3>
-        <p className="mt-1 text-[15px] font-medium text-ivoire/90">{p.short}</p>
-        <p className="mt-4 text-[15px] leading-relaxed text-mist">{p.solution ?? p.desc}</p>
 
-        {p.features && (
-          <div className="mt-4">
-            <Features items={p.features.slice(0, 3)} />
-          </div>
+      <div className="project-carousel-content">
+        <div className="project-carousel-meta">
+          <Status status={project.status} />
+          <span>{project.type}</span>
+        </div>
+        <div>
+          <h3 className="project-carousel-title">{project.name}</h3>
+          <p className="project-carousel-short">{project.short}</p>
+        </div>
+        <p className="project-carousel-description">{project.solution ?? project.desc}</p>
+        {project.problem && (
+          <details className="project-carousel-context">
+            <summary>Voir le contexte du projet</summary>
+            <p>{project.problem}</p>
+          </details>
         )}
-
-        <div className="mt-5">
-          <Tags tags={p.tags} />
-        </div>
-
-        <p className="mt-5 text-[13.5px] italic leading-relaxed text-mist/80">{p.role}</p>
-
-        <div className="mt-auto pt-7">
-          <Links p={p} />
-        </div>
+        {project.features && (
+          <ul className="project-carousel-features">
+            {project.features.slice(0, 3).map((feature) => (
+              <li key={feature}>
+                <Check aria-hidden className="h-4 w-4 shrink-0" />
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+        <Tags tags={project.tags} />
+        <p className="project-carousel-role">{project.role}</p>
+        <DiscoverLink project={project} active={isActive} />
       </div>
     </article>
   );
 }
 
 export function Projects() {
-  const featured = PROJECTS.find((p) => p.featured);
-  const others = PROJECTS.filter((p) => !p.featured);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isPageVisible, setIsPageVisible] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(true);
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const activeCardRef = useRef<HTMLElement | null>(null);
+  const total = PROJECTS.length;
+
+  useEffect(() => {
+    const updateVisibility = () => setIsPageVisible(document.visibilityState === "visible");
+    updateVisibility();
+    document.addEventListener("visibilitychange", updateVisibility);
+    return () => document.removeEventListener("visibilitychange", updateVisibility);
+  }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+    updatePreference();
+    mediaQuery.addEventListener("change", updatePreference);
+    return () => mediaQuery.removeEventListener("change", updatePreference);
+  }, []);
+
+  useEffect(() => {
+    if (isHovered || !isPageVisible || prefersReducedMotion || total < 2) return;
+
+    const timeout = window.setTimeout(() => {
+      setActiveIndex((index) => (index + 1) % total);
+    }, 4500);
+    return () => window.clearTimeout(timeout);
+  }, [activeIndex, isHovered, isPageVisible, prefersReducedMotion, total]);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    const card = activeCardRef.current;
+    if (!stage || !card) return;
+
+    const fitActiveCard = () => {
+      stage.style.removeProperty("min-height");
+      const minimumHeight = Number.parseFloat(window.getComputedStyle(stage).minHeight);
+      const cardHeight = card.offsetHeight + 20;
+      stage.style.minHeight = `${Math.max(minimumHeight, cardHeight)}px`;
+    };
+
+    const observer = new ResizeObserver(fitActiveCard);
+    observer.observe(card);
+    window.addEventListener("resize", fitActiveCard);
+    fitActiveCard();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", fitActiveCard);
+    };
+  }, [activeIndex]);
+
+  function move(direction: number) {
+    setActiveIndex((index) => (index + direction + total) % total);
+  }
+
+  function handlePointerDown(event: PointerEvent<HTMLDivElement>) {
+    if (event.pointerType === "touch") {
+      touchStart.current = { x: event.clientX, y: event.clientY };
+    }
+  }
+
+  function handlePointerUp(event: PointerEvent<HTMLDivElement>) {
+    const start = touchStart.current;
+    touchStart.current = null;
+    if (!start || event.pointerType !== "touch") return;
+
+    const deltaX = event.clientX - start.x;
+    const deltaY = event.clientY - start.y;
+    if (Math.abs(deltaX) > 48 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      move(deltaX < 0 ? 1 : -1);
+    }
+  }
+
+  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      move(1);
+    } else if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      move(-1);
+    }
+  }
+
   return (
-    <section id="projects" className="border-t border-line/60">
-      <div className="mx-auto max-w-[1200px] px-6 py-28 lg:px-10 lg:py-36">
-        <div className="mb-14 max-w-2xl">
+    <section id="projects" className="portfolio-section relative isolate border-t border-line/60">
+      <PortfolioDecorations area="projects" />
+      <div className="relative z-10 mx-auto max-w-[1200px] px-4 py-20 sm:px-6 sm:py-28 lg:px-10 lg:py-36">
+        <div className="mb-10 max-w-2xl sm:mb-14">
           <h2 className="h-section">Projets concrets</h2>
           <p className="mt-5 text-[1.05rem] leading-relaxed text-mist">
             Des applications conçues de A à Z : interface soignée, logique métier solide et
@@ -195,12 +293,74 @@ export function Projects() {
           </p>
         </div>
 
-        <div className="space-y-6 lg:space-y-8">
-          {featured && <Featured p={featured} />}
-          <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-3 lg:gap-8">
-            {others.map((p) => (
-              <Card key={p.name} p={p} />
-            ))}
+        <div
+          className="project-carousel"
+          role="region"
+          aria-roledescription="carrousel"
+          aria-label="Projets concrets"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <div
+            ref={stageRef}
+            className="project-carousel-stage"
+            tabIndex={0}
+            aria-label="Utilisez les flèches du clavier ou faites glisser pour parcourir les projets"
+            onKeyDown={handleKeyDown}
+            onPointerDown={handlePointerDown}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={() => {
+              touchStart.current = null;
+            }}
+          >
+            {PROJECTS.map((project, index) => {
+              const relativeIndex = (index - activeIndex + total) % total;
+              const offset = relativeIndex > total / 2 ? relativeIndex - total : relativeIndex;
+
+              return (
+                <ProjectCard
+                  key={project.name}
+                  project={project}
+                  offset={offset}
+                  onSelect={() => setActiveIndex(index)}
+                  activeCardRef={activeCardRef}
+                />
+              );
+            })}
+          </div>
+
+          <div className="project-carousel-controls">
+            <button
+              type="button"
+              className="project-carousel-arrow"
+              aria-label="Projet précédent"
+              onClick={() => move(-1)}
+            >
+              <ChevronLeft aria-hidden className="h-5 w-5" />
+            </button>
+            <div className="project-carousel-pagination" aria-label="Choisir un projet">
+              {PROJECTS.map((project, index) => (
+                <button
+                  key={project.name}
+                  type="button"
+                  className={`project-carousel-dot${index === activeIndex ? " is-active" : ""}`}
+                  aria-label={`Afficher ${project.name}`}
+                  aria-current={index === activeIndex ? "true" : undefined}
+                  onClick={() => setActiveIndex(index)}
+                />
+              ))}
+            </div>
+            <span className="project-carousel-count" aria-live="polite" aria-atomic="true">
+              {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+            </span>
+            <button
+              type="button"
+              className="project-carousel-arrow"
+              aria-label="Projet suivant"
+              onClick={() => move(1)}
+            >
+              <ChevronRight aria-hidden className="h-5 w-5" />
+            </button>
           </div>
         </div>
       </div>

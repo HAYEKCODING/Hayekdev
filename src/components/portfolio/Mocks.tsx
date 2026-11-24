@@ -13,9 +13,27 @@ const n = (i: number) => ({ "--n": i }) as CSSProperties;
 
 function Pharma() {
   const rows = [
-    { name: "Pharmacie Centrale", dist: "350 m", state: "En stock", tone: "bg-leaf/15 text-leaf", live: true },
-    { name: "Pharmacie du Marché", dist: "900 m", state: "Stock faible", tone: "bg-gold/15 text-gold", live: false },
-    { name: "Pharmacie Belle Vue", dist: "1,4 km", state: "Rupture", tone: "bg-ember/15 text-ember", live: false },
+    {
+      name: "Pharmacie Centrale",
+      dist: "350 m",
+      state: "En stock",
+      tone: "bg-leaf/15 text-leaf",
+      live: true,
+    },
+    {
+      name: "Pharmacie du Marché",
+      dist: "900 m",
+      state: "Stock faible",
+      tone: "bg-gold/15 text-gold",
+      live: false,
+    },
+    {
+      name: "Pharmacie Belle Vue",
+      dist: "1,4 km",
+      state: "Rupture",
+      tone: "bg-ember/15 text-ember",
+      live: false,
+    },
   ];
   return (
     <>
@@ -38,7 +56,11 @@ function Pharma() {
             <div className="text-[10.5px] text-mist">{r.dist}</div>
           </div>
           <span className={`pm-pill ${r.tone}`}>{r.state}</span>
-          {r.live ? <span className="pm-btn live">Réserver</span> : <span className="pm-btn opacity-40">Réserver</span>}
+          {r.live ? (
+            <span className="pm-btn live">Réserver</span>
+          ) : (
+            <span className="pm-btn opacity-40">Réserver</span>
+          )}
         </div>
       ))}
       <div className="pm-toast">
@@ -51,12 +73,9 @@ function Pharma() {
 }
 
 const PATTERNS = [
-  // bandes indigo et or
-  "repeating-linear-gradient(90deg,#1c2a8a 0 10px,#f5b41b 10px 14px,#1c2a8a 14px 26px,#e8e0cc 26px 29px)",
-  // losanges
-  "conic-gradient(from 45deg at 50% 50%,#e2553b 0 25%,#f5b41b 0 50%,#e2553b 0 75%,#f5b41b 0) 0 0/22px 22px",
-  // damier fin
-  "repeating-conic-gradient(#0f1740 0 25%,#3d8beb 0 50%) 0 0/16px 16px",
+  "repeating-linear-gradient(90deg,#0e7490 0 10px,#67e8f9 10px 14px,#0e7490 14px 26px,#f0ede5 26px 29px)",
+  "conic-gradient(from 45deg at 50% 50%,#0e7490 0 25%,#a5e3ee 0 50%,#0e7490 0 75%,#a5e3ee 0) 0 0/22px 22px",
+  "repeating-conic-gradient(#dff4f8 0 25%,#60a5fa 0 50%) 0 0/16px 16px",
 ];
 
 function Shop() {
@@ -72,7 +91,10 @@ function Shop() {
         <i />
         <i />
         <span>Chic Ivoire</span>
-        <span className="cm-cart relative ml-auto h-5 w-5 rounded-full bg-gold text-night" aria-hidden>
+        <span
+          className="cm-cart relative ml-auto h-5 w-5 rounded-full bg-gold text-night"
+          aria-hidden
+        >
           <span className="a text-[10px] font-bold">1</span>
           <span className="b text-[10px] font-bold">2</span>
         </span>
@@ -96,7 +118,7 @@ function Shop() {
 
 function School() {
   const bars = [55, 72, 48, 84, 66, 92, 78];
-  const week = ["#3d8beb", "#f5b41b", "#3dd68c", "#3d8beb", "#f5b41b"];
+  const week = ["#60a5fa", "#bae6fd", "#49a77a", "#60a5fa", "#bae6fd"];
   return (
     <>
       <div className="mock-bar">
@@ -121,13 +143,17 @@ function School() {
               <span
                 key={i}
                 className="sm-bar"
-                style={{ ...n(i), height: `${b}%`, background: i === 5 ? "#f5b41b" : "#2a4fb8" }}
+                style={{ ...n(i), height: `${b}%`, background: i === 5 ? "#0891b2" : "#60a5fa" }}
               />
             ))}
           </div>
           <div className="mt-3 grid grid-cols-5 gap-1.5">
             {week.map((c, i) => (
-              <div key={i} className="rounded-md p-1.5 text-[9.5px] font-semibold text-night" style={{ background: c }}>
+              <div
+                key={i}
+                className="rounded-md p-1.5 text-[9.5px] font-semibold text-ivoire"
+                style={{ background: c }}
+              >
                 {["Maths", "Fr.", "SVT", "Angl.", "EPS"][i]}
               </div>
             ))}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowUpRight, Github, Linkedin, Mail, MapPin, MessageCircle, Phone, type LucideIcon } from "lucide-react";
 import { PROFILE } from "@/data/portfolio";
 import { useMagnetic } from "./hooks";
+import { PortfolioDecorations } from "./PortfolioDecorations";
 
 const ROWS: { label: string; value: string; href?: string; icon: LucideIcon }[] = [
   { label: "Email", value: PROFILE.email, href: `mailto:${PROFILE.email}`, icon: Mail },
@@ -99,8 +100,12 @@ function ContactForm() {
 
 export function Contact() {
   return (
-    <section id="contact" className="border-t border-line/60 bg-deep/40">
-      <div className="mx-auto max-w-[1200px] px-6 py-28 lg:px-10 lg:py-40">
+    <section
+      id="contact"
+      className="portfolio-section relative isolate border-t border-line/60 bg-deep/40"
+    >
+      <PortfolioDecorations area="contact" />
+      <div className="relative z-10 mx-auto max-w-[1200px] px-6 py-28 lg:px-10 lg:py-40">
         <div className="grid grid-cols-[minmax(0,1fr)] gap-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-24">
           <div>
             <h2 className="font-display text-[clamp(3rem,8vw,6.6rem)] font-extrabold leading-[0.92] tracking-[-0.035em] [font-stretch:84%]">

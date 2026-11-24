@@ -1,9 +1,14 @@
 import { SKILLS } from "@/data/portfolio";
+import { PortfolioDecorations } from "./PortfolioDecorations";
 
 export function Stack() {
   return (
-    <section id="skills" className="border-t border-line/60 bg-deep/40">
-      <div className="mx-auto max-w-[1200px] px-6 py-28 lg:px-10 lg:py-36">
+    <section
+      id="skills"
+      className="portfolio-section relative isolate border-t border-line/60 bg-deep/40"
+    >
+      <PortfolioDecorations area="skills" />
+      <div className="relative z-10 mx-auto max-w-[1200px] px-6 py-28 lg:px-10 lg:py-36">
         <div className="mb-16 max-w-2xl">
           <h2 className="h-section">Compétences et technologies</h2>
           <p className="mt-5 text-[1.05rem] leading-relaxed text-mist">

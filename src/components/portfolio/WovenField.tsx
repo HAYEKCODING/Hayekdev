@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 /**
  * Champ de losanges tissés — la signature visuelle du hero.
  *
- * Le motif rappelle le tissage d'Afrique de l'Ouest (pagne baoulé, fil d'or sur indigo).
+ * Le motif rappelle le tissage d'Afrique de l'Ouest avec un accent orange discret.
  * Une « navette » traverse le champ en continu ; le curseur (ou le doigt qui touche l'écran)
  * réveille les losanges autour de lui ; un clic lance une onde. Les losanges s'éteignent
  * progressivement et laissent une traînée.
@@ -17,7 +17,7 @@ const CELL = 34; // largeur d'un losange (px CSS)
 const R = CELL / 2; // demi-diagonale
 const HALF = CELL / 2; // pas vertical (les rangées sont décalées d'un demi-losange)
 
-const NIGHT = "#090e28";
+const PAPER = "#ffffff";
 
 function hash(i: number, j: number) {
   let h = (i * 374761393 + j * 668265263) | 0;
@@ -74,12 +74,12 @@ export function WovenField({ className = "" }: { className?: string }) {
             // quelques losanges pleins : la trame du tissu
             bctx.beginPath();
             diamond(bctx, x, y, R * 0.7);
-            bctx.fillStyle = "rgba(38, 74, 170, 0.22)";
+            bctx.fillStyle = "rgba(255, 138, 0, 0.08)";
             bctx.fill();
           }
           bctx.beginPath();
           diamond(bctx, x, y, R * 0.78);
-          bctx.strokeStyle = "rgba(110, 130, 215, 0.17)";
+          bctx.strokeStyle = "rgba(255, 138, 0, 0.13)";
           bctx.lineWidth = 1;
           bctx.stroke();
         }
@@ -133,11 +133,11 @@ export function WovenField({ className = "" }: { className?: string }) {
           const e = energy[j * cols + i];
           if (e < 0.035) continue;
           const c = center(i, j);
-          // bleu cobalt à faible énergie → or à forte énergie
+          // Orange doux à faible énergie → orange soutenu à forte énergie
           const t = Math.min(1, Math.max(0, (e - 0.3) / 0.5));
-          const r = Math.round(61 + (245 - 61) * t);
-          const g = Math.round(139 + (180 - 139) * t);
-          const b = Math.round(235 + (27 - 235) * t);
+          const r = 255;
+          const g = Math.round(177 + (138 - 177) * t);
+          const b = Math.round(85 * (1 - t));
           ctx!.beginPath();
           diamond(ctx!, c.x, c.y, R * (0.55 + 0.4 * e));
           ctx!.fillStyle = `rgba(${r}, ${g}, ${b}, ${Math.min(0.95, e * 1.15).toFixed(3)})`;
@@ -146,7 +146,7 @@ export function WovenField({ className = "" }: { className?: string }) {
             // cœur creux : le motif de losanges emboîtés
             ctx!.beginPath();
             diamond(ctx!, c.x, c.y, R * 0.26);
-            ctx!.fillStyle = NIGHT;
+            ctx!.fillStyle = PAPER;
             ctx!.fill();
           }
         }
@@ -185,7 +185,12 @@ export function WovenField({ className = "" }: { className?: string }) {
         const steps = 26;
         for (let s = 0; s < steps; s++) {
           const a = (s / steps) * Math.PI * 2;
-          inject(rp.x + Math.cos(a) * radius, rp.y + Math.sin(a) * radius, 46, 0.34 * (1 - age / 1.6));
+          inject(
+            rp.x + Math.cos(a) * radius,
+            rp.y + Math.sin(a) * radius,
+            46,
+            0.34 * (1 - age / 1.6),
+          );
         }
       }
       render();

@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { ABOUT, PROFILE } from "@/data/portfolio";
 import { DevStatus } from "./DevStatus";
+import { PortfolioDecorations } from "./PortfolioDecorations";
 import { useScrollProgress } from "./hooks";
 
 export function About() {
@@ -9,8 +10,12 @@ export function About() {
   const words = ABOUT.lead.split(" ");
 
   return (
-    <section id="about" className="mx-auto max-w-[1200px] px-6 py-28 lg:px-10 lg:py-40">
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+    <section
+      id="about"
+      className="portfolio-section relative isolate mx-auto max-w-[1200px] px-6 py-28 lg:px-10 lg:py-40"
+    >
+      <PortfolioDecorations area="about" />
+      <div className="relative z-10 grid grid-cols-[minmax(0,1fr)] gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
         <div className="lg:sticky lg:top-28">
           <h2 className="h-section">{ABOUT.title}</h2>
           <div className="mt-10 hidden lg:block">

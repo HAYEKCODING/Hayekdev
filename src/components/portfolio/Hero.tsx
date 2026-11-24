@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react";
 import { ArrowDown, Download, FileText, Github, Linkedin } from "lucide-react";
-import avatar from "@/assets/photo_2026-07-22_13-43-49.jpg";
+import avatar from "@/assets/portrait-neutral.jpg";
 import { CV, PROFILE, STATS, TYPED } from "@/data/portfolio";
 import { WovenField } from "./WovenField";
 import { KineticName } from "./KineticName";
 import { Counter } from "./Counter";
+import { PortfolioDecorations } from "./PortfolioDecorations";
 import { useAbidjanTime, useMagnetic, useTyped } from "./hooks";
 
 export function Hero() {
@@ -44,47 +45,62 @@ export function Hero() {
   }, []);
 
   return (
-    <header id="home" className="relative overflow-hidden">
+    <header id="home" className="portfolio-section relative isolate">
+      <PortfolioDecorations area="home" />
       {/* Champ tissé */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 opacity-60 [mask-image:linear-gradient(to_bottom,#000_62%,transparent_100%)] lg:opacity-100">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-45 [mask-image:linear-gradient(to_bottom,#000_62%,transparent_100%)] lg:opacity-70"
+      >
         <WovenField />
       </div>
       {/* Voile de lisibilité sous le texte */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgb(9_14_40/0.82)_0%,rgb(9_14_40/0.5)_38%,transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgb(255_255_255/0.94)_0%,rgb(255_255_255/0.78)_46%,rgb(255_255_255/0.18)_100%)]"
       />
 
-      <div className="relative mx-auto grid max-w-[1200px] grid-cols-[minmax(0,1fr)] items-center gap-14 px-6 pb-24 pt-32 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)] lg:gap-8 lg:px-10 lg:pb-32 lg:pt-40">
+      <div className="relative z-10 mx-auto grid max-w-[1200px] grid-cols-[minmax(0,1fr)] items-center gap-14 px-4 pb-24 pt-32 sm:px-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)] lg:gap-8 lg:px-10 lg:pb-32 lg:pt-40">
         <div className="min-w-0">
-          <p className="hero-rise mb-6 flex items-center gap-3 text-[15px] text-mist" style={{ "--d": "0.1s" } as React.CSSProperties}>
+          <p
+            className="hero-rise mb-6 flex items-center gap-3 text-[15px] text-mist"
+            style={{ "--d": "0.1s" } as React.CSSProperties}
+          >
             <span className="dia text-gold" />
-            {PROFILE.role} à {PROFILE.city}
+            Développeur Fullstack
           </p>
 
           <KineticName
             lines={[...PROFILE.heroLines]}
-            className="text-[clamp(3.6rem,15.5vw,6.4rem)] sm:text-[clamp(5rem,14vw,8rem)] lg:text-[clamp(5rem,8.4vw,8.4rem)]"
+            className="text-[clamp(3rem,14vw,6.4rem)] sm:text-[clamp(4.5rem,14vw,8rem)] lg:text-[clamp(5rem,8.4vw,8.4rem)]"
           />
 
           <p
             className="hero-rise mt-9 min-h-[3.4rem] text-[1.35rem] font-medium leading-snug text-ivoire sm:text-[1.6rem] lg:min-h-[2.2rem]"
             style={{ "--d": "1.0s" } as React.CSSProperties}
           >
-            <span className="sr-only">Je construis des applications web pour les PME et startups africaines.</span>
+            <span className="sr-only">
+              Je construis des applications web pour les PME et startups africaines.
+            </span>
             <span aria-hidden>
               Je construis {typed}
               <span className="caret" />
             </span>
           </p>
 
-          <p className="hero-rise mt-5 max-w-[34rem] text-[1.02rem] leading-relaxed text-mist" style={{ "--d": "1.15s" } as React.CSSProperties}>
+          <p
+            className="hero-rise mt-5 max-w-[34rem] text-[1.02rem] leading-relaxed text-mist"
+            style={{ "--d": "1.15s" } as React.CSSProperties}
+          >
             React et Spring Boot côté code, MySQL et PostgreSQL côté données. Je livre des
             applications complètes pour les PME et startups africaines, du premier écran à la mise
             en ligne.
           </p>
 
-          <div className="hero-rise mt-9 flex flex-wrap items-center gap-3" style={{ "--d": "1.3s" } as React.CSSProperties}>
+          <div
+            className="hero-rise mt-9 flex flex-wrap items-center gap-3"
+            style={{ "--d": "1.3s" } as React.CSSProperties}
+          >
             <a ref={ctaRef} href="#projects" className="btn btn-gold">
               Voir les projets
               <ArrowDown className="h-4 w-4" />
@@ -152,19 +168,25 @@ export function Hero() {
         </div>
 
         {/* Portrait */}
-        <div className="hero-rise relative mx-auto w-full max-w-[22rem] lg:ml-auto lg:mr-0 lg:max-w-[25rem]" style={{ "--d": "0.7s" } as React.CSSProperties}>
+        <div
+          className="hero-rise relative mx-auto w-full max-w-[22rem] lg:ml-auto lg:mr-0 lg:max-w-[25rem]"
+          style={{ "--d": "0.7s" } as React.CSSProperties}
+        >
           <div
             ref={plateRef}
             aria-hidden
-            className="absolute inset-0 translate-x-3.5 translate-y-3.5 bg-gold transition-transform duration-300 ease-out [clip-path:polygon(0_0,calc(100%-48px)_0,100%_48px,100%_100%,48px_100%,0_calc(100%-48px))]"
+            className="absolute inset-0 translate-x-3.5 translate-y-3.5 bg-[#FF8A00] transition-transform duration-300 ease-out [clip-path:polygon(0_0,calc(100%-48px)_0,100%_48px,100%_100%,48px_100%,0_calc(100%-48px))]"
           />
-          <div ref={portraitRef} className="relative transition-transform duration-300 ease-out will-change-transform">
+          <div
+            ref={portraitRef}
+            className="relative transition-transform duration-300 ease-out will-change-transform"
+          >
             <div className="relative aspect-[4/5] overflow-hidden bg-deep [clip-path:polygon(0_0,calc(100%-48px)_0,100%_48px,100%_100%,48px_100%,0_calc(100%-48px))]">
               <img
                 src={avatar}
                 alt={`Portrait de ${PROFILE.shortName}`}
-                width={1024}
-                height={1280}
+                width={1254}
+                height={1254}
                 loading="eager"
                 decoding="async"
                 className="h-full w-full object-cover"
@@ -172,7 +194,7 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="absolute -bottom-5 -left-3 flex items-center gap-3 rounded-full border border-line bg-night/90 py-2.5 pl-4 pr-5 shadow-[0_18px_40px_-18px_rgb(0_0_0/0.8)] backdrop-blur-md sm:-left-8">
+          <div className="absolute -bottom-5 left-0 flex items-center gap-3 rounded-full border border-line bg-white/95 py-2.5 pl-4 pr-5 shadow-[0_14px_32px_-18px_rgb(31_55_74/0.3)] backdrop-blur-md sm:-left-8">
             <span className="relative flex h-2.5 w-2.5">
               <span className="ping-soft absolute inline-flex h-full w-full rounded-full bg-leaf" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-leaf" />
@@ -180,11 +202,14 @@ export function Hero() {
             <span className="text-[14px] font-medium">Ouvert aux missions</span>
           </div>
 
-          <div className="absolute -right-2 -top-5 rounded-2xl border border-line bg-night/90 px-4 py-2.5 text-right shadow-[0_18px_40px_-18px_rgb(0_0_0/0.8)] backdrop-blur-md sm:-right-6">
+          <div className="absolute right-0 -top-5 rounded-2xl border border-line bg-white/95 px-4 py-2.5 text-right shadow-[0_14px_32px_-18px_rgb(31_55_74/0.3)] backdrop-blur-md sm:-right-6">
             <div className="text-[12px] text-mist">
               {PROFILE.city}, {PROFILE.country}
             </div>
-            <div className="font-display text-xl font-semibold tabular-nums leading-tight" suppressHydrationWarning>
+            <div
+              className="font-display text-xl font-semibold tabular-nums leading-tight"
+              suppressHydrationWarning
+            >
               {time ?? "--:--"}
             </div>
           </div>

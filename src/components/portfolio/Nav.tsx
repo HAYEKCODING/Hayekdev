@@ -26,7 +26,8 @@ export function Nav() {
       raf = 0;
       const y = window.scrollY;
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      if (barRef.current) barRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+      if (barRef.current)
+        barRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
       setScrolled((v) => (v === y > 24 ? v : y > 24));
       setShowTop((v) => (v === y > 700 ? v : y > 700));
     };
@@ -94,9 +95,13 @@ export function Nav() {
         }`}
       >
         <div className="mx-auto flex h-[4.25rem] max-w-[1200px] items-center justify-between px-6 lg:px-10">
-          <a href="#home" className="flex items-center gap-3" onClick={() => setOpen(false)}>
+          <a
+            href="#home"
+            className="flex min-w-0 items-center gap-2 sm:gap-3"
+            onClick={() => setOpen(false)}
+          >
             <Mark />
-            <span className="font-display text-[1.15rem] font-bold tracking-tight [font-stretch:88%]">
+            <span className="whitespace-nowrap font-display text-[clamp(0.82rem,4.5vw,1.15rem)] font-bold tracking-tight [font-stretch:88%]">
               {PROFILE.shortName}
             </span>
           </a>
@@ -132,7 +137,10 @@ export function Nav() {
               <FileText className="h-4 w-4" />
               CV
             </a>
-            <a href="#contact" className="btn btn-gold hidden !h-10 !px-5 !text-[14px] sm:inline-flex">
+            <a
+              href="#contact"
+              className="btn btn-gold hidden !h-10 !px-5 !text-[14px] sm:inline-flex"
+            >
               Me contacter
             </a>
             <button
@@ -161,8 +169,11 @@ export function Nav() {
               <a
                 href={n.href}
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-between py-5 font-display text-[2.3rem] font-bold tracking-tight [font-stretch:84%]"
-                style={{ animation: "menu-item .6s cubic-bezier(.2,.8,.2,1) both", animationDelay: `${0.05 + i * 0.06}s` }}
+                className="flex items-center justify-between gap-4 py-5 font-display text-[clamp(1.7rem,8vw,2.3rem)] font-bold tracking-tight [font-stretch:84%]"
+                style={{
+                  animation: "menu-item .6s cubic-bezier(.2,.8,.2,1) both",
+                  animationDelay: `${0.05 + i * 0.06}s`,
+                }}
               >
                 {n.label}
                 <span className="dia text-gold" />
@@ -182,7 +193,12 @@ export function Nav() {
               <FileText className="h-4 w-4" />
               Voir mon CV
             </a>
-            <a href={CV.href} download={CV.fileName} aria-label="Télécharger le CV" className="btn btn-ghost !w-12 !px-0">
+            <a
+              href={CV.href}
+              download={CV.fileName}
+              aria-label="Télécharger le CV"
+              className="btn btn-ghost !w-12 !px-0"
+            >
               <Download className="h-[18px] w-[18px]" />
             </a>
           </div>

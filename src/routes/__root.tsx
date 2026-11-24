@@ -85,7 +85,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: `${PROFILE.shortName} — Développeur Full Stack à ${PROFILE.city}` },
       { name: "description", content: DESCRIPTION },
       { name: "author", content: PROFILE.shortName },
-      { name: "theme-color", content: "#090e28" },
+      { name: "theme-color", content: "#ffffff" },
       { property: "og:title", content: `${PROFILE.shortName} — Développeur Full Stack` },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },

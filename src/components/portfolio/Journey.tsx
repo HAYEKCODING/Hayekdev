@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { EDUCATION, EXPERIENCE, type TimelineItem } from "@/data/portfolio";
 import { useScrollProgress } from "./hooks";
+import { PortfolioDecorations } from "./PortfolioDecorations";
 
 /**
  * Timeline avec un fil qui se tisse pendant le défilement.
@@ -59,8 +60,12 @@ function Column({ title, items }: { title: string; items: TimelineItem[] }) {
 
 export function Journey() {
   return (
-    <section id="experience" className="border-t border-line/60 bg-deep/40">
-      <div className="mx-auto max-w-[1200px] px-6 py-28 lg:px-10 lg:py-36">
+    <section
+      id="experience"
+      className="portfolio-section relative isolate border-t border-line/60 bg-deep/40"
+    >
+      <PortfolioDecorations area="journey" />
+      <div className="relative z-10 mx-auto max-w-[1200px] px-6 py-28 lg:px-10 lg:py-36">
         <div className="mb-16 max-w-2xl">
           <h2 className="h-section">Expérience et formation</h2>
           <p className="mt-5 text-[1.05rem] leading-relaxed text-mist">
