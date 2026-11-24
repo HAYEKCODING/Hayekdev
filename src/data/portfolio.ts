@@ -52,7 +52,7 @@ export const TYPED = [
 ];
 
 export const STATS = [
-  { value: 3, label: "projets construits" },
+  { value: 6, label: "projets construits" },
   { value: 2, label: "stages en entreprise" },
   { value: 12, label: "technologies pratiquées" },
   { value: 3, label: "années d'études en informatique" },
@@ -153,9 +153,7 @@ export interface Project {
   role: string;
   tags: string[];
   status: "En cours" | "Livré" | "Expérience pro";
-  /** Lien du code sur GitHub. Remplace-le par le lien direct du dépôt quand il existe. */
-  href: string;
-  /** Lien de démonstration en ligne (optionnel) : un bouton « Voir la démo » apparaît. */
+  /** Lien du projet en ligne (optionnel) : un bouton « Voir le site » apparaît. */
   live?: string;
   featured?: boolean;
   mock: MockKind;
@@ -164,27 +162,27 @@ export interface Project {
 export const PROJECTS: Project[] = [
   {
     name: "PharmaCi",
-    short: "Disponibilité et réservation de médicaments",
+    short: "Pharmacies ouvertes, médicaments et comparaison des prix",
     type: "HealthTech · application web",
-    desc: "Plateforme dédiée aux pharmacies de Côte d'Ivoire : disponibilité des médicaments et réservation en ligne.",
+    desc: "Assistant santé pour trouver des pharmacies ouvertes, vérifier la disponibilité des médicaments et comparer les prix en Côte d'Ivoire.",
     problem:
       "En Côte d'Ivoire, savoir si une pharmacie a un médicament en stock oblige souvent à appeler ou à se déplacer plusieurs fois, sans certitude de le trouver.",
     solution:
-      "PharmaCi centralise la disponibilité des médicaments par pharmacie et permet aux patients de réserver en ligne avant de se déplacer.",
+      "PharmaCi aide les patients à trouver des pharmacies ouvertes, vérifier les stocks et comparer les prix avant de se déplacer.",
     features: [
       "Recherche de médicaments par nom",
       "Consultation de la disponibilité en temps réel par pharmacie",
-      "Réservation en ligne avant le retrait",
+      "Recherche de pharmacies ouvertes et comparaison des prix",
     ],
     role: "Conception et développement complet : interface React, API Spring Boot, base de données MySQL.",
     tags: ["React", "Spring Boot", "MySQL", "Tailwind"],
     status: "En cours",
-    href: "https://github.com/HAYEKCODING/pharma-projrct",
+    live: "https://pharmacie-ci.base44.app",
     featured: true,
     mock: "pharma",
   },
   {
-    name: "Chic Ivoire",
+    name: "Chic Ivoire Boutique",
     short: "Mode féminine ivoirienne",
     type: "E-commerce",
     desc: "Boutique en ligne dédiée à la mode féminine ivoirienne.",
@@ -200,23 +198,27 @@ export const PROJECTS: Project[] = [
     role: "Développement complet de la boutique, du catalogue jusqu'au paiement.",
     tags: ["Next.js", "Tailwind", "MySQL"],
     status: "Livré",
-    href: "https://github.com/HAYEKCODING/chic-ivoire",
+    live: "https://chic-ivoire-boutique.lovable.app",
     mock: "shop",
   },
   {
-    name: "Plateforme de gestion scolaire",
-    short: "Élèves, enseignants, notes",
-    type: "SaaS · éducation",
-    desc: "Solution moderne de gestion scolaire pensée pour une expérience fluide et intuitive.",
+    name: "CampusLink",
+    short: "Le réseau éducatif des étudiants",
+    type: "Éducation · réseau étudiant",
+    desc: "Plateforme qui aide les étudiants à trouver des binômes de révision, des partenaires d'étude et des contacts sur leur campus.",
     problem:
-      "Les établissements scolaires jonglent souvent avec plusieurs outils déconnectés pour suivre élèves, notes et emplois du temps.",
+      "Les étudiants ont parfois du mal à trouver des binômes de révision et des partenaires d'étude sur leur campus.",
     solution:
-      "Une plateforme centralisée qui réunit élèves, enseignants, notes et communication interne au même endroit.",
-    features: ["Gestion des élèves et enseignants", "Suivi des notes", "Emplois du temps", "Communication interne"],
-    role: "Conception et développement de la plateforme, frontend et backend.",
-    tags: ["React", "Spring Boot", "PostgreSQL"],
-    status: "En cours",
-    href: "https://github.com/HAYEKCODING",
+      "CampusLink met en relation les étudiants et facilite la recherche de partenaires d'étude et de contacts sur le campus.",
+    features: [
+      "Recherche de binômes de révision",
+      "Partenaires d'étude",
+      "Contacts sur son campus",
+    ],
+    role: "Conception et développement de la plateforme.",
+    tags: [],
+    status: "Livré",
+    live: "https://campuslink-olive.vercel.app/",
     mock: "school",
   },
   {
@@ -225,11 +227,41 @@ export const PROJECTS: Project[] = [
     type: "Backend · expérience professionnelle",
     desc: "Contributions à l'équipe backend de Synelia Group Africa.",
     role: "Développement de fonctionnalités, correction de bugs et maintenance évolutive au sein de l'équipe backend, en environnement agile.",
-    features: ["Développement de fonctionnalités métier", "Correction de bugs", "Amélioration des performances"],
+    features: [
+      "Développement de fonctionnalités métier",
+      "Correction de bugs",
+      "Amélioration des performances",
+    ],
     tags: ["Java", "Spring Boot", "MySQL", "Git", "REST"],
     status: "Expérience pro",
-    href: "https://github.com/HAYEKCODING",
     mock: "api",
+  },
+  {
+    name: "Bernabe RH",
+    short: "Gestion des ressources humaines",
+    type: "Application métier · RH",
+    desc: "Application web de gestion des ressources humaines.",
+    role: "Conception et développement de la plateforme RH.",
+    tags: [],
+    status: "Livré",
+    live: "https://bernabe-rh.onrender.com/login",
+    mock: "api",
+  },
+  {
+    name: "Bernice Parfumerie",
+    short: "Parfums et montres de luxe",
+    type: "E-commerce · parfumerie",
+    desc: "Boutique en ligne de parfums et de montres, avec prix en FCFA, commande par WhatsApp et livraison en Côte d'Ivoire.",
+    features: [
+      "Catalogue de parfums et de montres",
+      "Commande par WhatsApp",
+      "Livraison en Côte d'Ivoire",
+    ],
+    role: "Conception et développement de la boutique en ligne.",
+    tags: [],
+    status: "Livré",
+    live: "https://bernices-boutique-bliss.lovable.app",
+    mock: "shop",
   },
 ];
 
@@ -247,7 +279,7 @@ export const EXPERIENCE: TimelineItem[] = [
     date: "2024 à aujourd'hui",
     role: "Développeur d'applications, projets personnels",
     org: "Freelance et apprentissage",
-    desc: "Conception et développement d'applications web et mobiles : PharmaCi, Chic Ivoire, plateforme de gestion scolaire. Modélisation Merise/UML, API REST, intégration base de données.",
+    desc: "Conception et développement d'applications web et mobiles : PharmaCi, Chic Ivoire, CampusLink, Bernabe RH et Bernice Parfumerie. Modélisation Merise/UML, API REST, intégration base de données.",
     tags: ["React", "Flutter", "PHP", "Spring Boot"],
   },
   {

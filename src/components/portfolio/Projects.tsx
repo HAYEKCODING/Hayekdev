@@ -1,17 +1,19 @@
-import { ArrowUpRight, Check, Github } from "lucide-react";
+import { ArrowUpRight, Check } from "lucide-react";
 import { PROJECTS, type Project } from "@/data/portfolio";
 import { ProjectMock } from "./Mocks";
 import { tiltHandlers } from "./hooks";
 
 const STATUS_STYLE: Record<Project["status"], string> = {
   "En cours": "bg-gold/15 text-gold",
-  "Livré": "bg-leaf/15 text-leaf",
+  Livré: "bg-leaf/15 text-leaf",
   "Expérience pro": "bg-cobalt/15 text-cobalt",
 };
 
 function Status({ status }: { status: Project["status"] }) {
   return (
-    <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[13px] font-medium ${STATUS_STYLE[status]}`}>
+    <span
+      className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[13px] font-medium ${STATUS_STYLE[status]}`}
+    >
       <span className="h-1.5 w-1.5 rounded-full bg-current" />
       {status}
     </span>
@@ -45,24 +47,29 @@ function Features({ items }: { items: string[] }) {
 }
 
 function Links({ p }: { p: Project }) {
+  if (!p.live) return null;
+
   return (
-    <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-      {p.live && (
-        <a href={p.live} target="_blank" rel="noreferrer" className="btn btn-gold !h-11">
-          Voir la démo
-          <ArrowUpRight className="h-4 w-4" />
-        </a>
-      )}
-      <a
-        href={p.href}
-        target="_blank"
-        rel="noreferrer"
-        className="group inline-flex items-center gap-2 text-[15px] font-semibold text-ivoire transition-colors hover:text-gold"
-      >
-        <Github className="h-4 w-4" />
-        Voir le code sur GitHub
-        <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-      </a>
+    <a href={p.live} target="_blank" rel="noreferrer" className="btn btn-gold !h-11">
+      Voir le site
+      <ArrowUpRight className="h-4 w-4" />
+    </a>
+  );
+}
+
+function ProjectPreview({ p }: { p: Project }) {
+  if (!p.live) {
+    return <ProjectMock kind={p.mock} label={`Aperçu illustratif de l'interface ${p.name}`} />;
+  }
+
+  return (
+    <div className="project-preview">
+      <iframe
+        src={p.live}
+        title={`Aperçu de l'interface ${p.name}`}
+        loading="lazy"
+        referrerPolicy="no-referrer"
+      />
     </div>
   );
 }
@@ -85,11 +92,15 @@ function Featured({ p }: { p: Project }) {
         {p.problem && p.solution ? (
           <div className="mt-6 max-w-[30rem] space-y-4">
             <div>
-              <p className="text-[13px] font-semibold uppercase tracking-wide text-gold">Le problème</p>
+              <p className="text-[13px] font-semibold uppercase tracking-wide text-gold">
+                Le problème
+              </p>
               <p className="mt-1.5 leading-relaxed text-mist">{p.problem}</p>
             </div>
             <div>
-              <p className="text-[13px] font-semibold uppercase tracking-wide text-gold">La solution</p>
+              <p className="text-[13px] font-semibold uppercase tracking-wide text-gold">
+                La solution
+              </p>
               <p className="mt-1.5 leading-relaxed text-mist">{p.solution}</p>
             </div>
           </div>
@@ -99,7 +110,9 @@ function Featured({ p }: { p: Project }) {
 
         {p.features && (
           <div className="mt-6 max-w-[30rem]">
-            <p className="mb-3 text-[13px] font-semibold uppercase tracking-wide text-gold">Fonctionnalités clés</p>
+            <p className="mb-3 text-[13px] font-semibold uppercase tracking-wide text-gold">
+              Fonctionnalités clés
+            </p>
             <Features items={p.features} />
           </div>
         )}
@@ -108,7 +121,9 @@ function Featured({ p }: { p: Project }) {
           <Tags tags={p.tags} />
         </div>
 
-        <p className="mt-6 max-w-[30rem] text-[14px] italic leading-relaxed text-mist/80">{p.role}</p>
+        <p className="mt-6 max-w-[30rem] text-[14px] italic leading-relaxed text-mist/80">
+          {p.role}
+        </p>
 
         <div className="mt-8">
           <Links p={p} />
@@ -117,9 +132,11 @@ function Featured({ p }: { p: Project }) {
 
       <div className="flex min-w-0 flex-col justify-center">
         <div data-tilt className="tilt">
-          <ProjectMock kind={p.mock} label={`Aperçu illustratif de l'interface ${p.name}`} />
+          <ProjectPreview p={p} />
         </div>
-        <p className="mt-4 text-center text-[13px] text-mist/80">Aperçu illustratif de l'interface</p>
+        <p className="mt-4 text-center text-[13px] text-mist/80">
+          {p.live ? "Aperçu de l'interface en ligne" : "Aperçu illustratif de l'interface"}
+        </p>
       </div>
     </article>
   );
@@ -128,9 +145,12 @@ function Featured({ p }: { p: Project }) {
 function Card({ p }: { p: Project }) {
   const h = tiltHandlers();
   return (
-    <article {...h} className="spot flex flex-col rounded-[22px] border border-line bg-deep/70 p-5 sm:p-6">
+    <article
+      {...h}
+      className="spot flex flex-col rounded-[22px] border border-line bg-deep/70 p-5 sm:p-6"
+    >
       <div data-tilt className="tilt [&_.mock]:min-h-[240px]">
-        <ProjectMock kind={p.mock} label={`Aperçu illustratif de l'interface ${p.name}`} />
+        <ProjectPreview p={p} />
       </div>
       <div className="mt-6 flex flex-1 flex-col">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
@@ -168,7 +188,7 @@ export function Projects() {
     <section id="projects" className="border-t border-line/60">
       <div className="mx-auto max-w-[1200px] px-6 py-28 lg:px-10 lg:py-36">
         <div className="mb-14 max-w-2xl">
-          <h2 className="h-section">Projets récents</h2>
+          <h2 className="h-section">Projets concrets</h2>
           <p className="mt-5 text-[1.05rem] leading-relaxed text-mist">
             Des applications conçues de A à Z : interface soignée, logique métier solide et
             technologies modernes.
