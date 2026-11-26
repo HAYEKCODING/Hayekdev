@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { ArrowUpRight, Github, Linkedin, Mail, MapPin, MessageCircle, Phone, type LucideIcon } from "lucide-react";
+import {
+  ArrowUpRight,
+  Github,
+  Linkedin,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Phone,
+  type LucideIcon,
+} from "lucide-react";
 import { PROFILE } from "@/data/portfolio";
 import { useMagnetic } from "./hooks";
 import { PortfolioDecorations } from "./PortfolioDecorations";
@@ -36,7 +45,11 @@ function ContactForm() {
   const sendWhatsApp = () => {
     const text = compose();
     if (!text) return;
-    window.open(`https://wa.me/${PROFILE.whatsapp}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+    window.open(
+      `https://wa.me/${PROFILE.whatsapp}?text=${encodeURIComponent(text)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
   };
   const sendEmail = () => {
     const text = compose();
@@ -93,7 +106,9 @@ function ContactForm() {
           Envoyer par email
         </button>
       </div>
-      <p className="text-[13px] text-mist">Le message s'ouvre dans l'application choisie, prêt à envoyer.</p>
+      <p className="text-[13px] text-mist">
+        Le message s'ouvre dans l'application choisie, prêt à être envoyé.
+      </p>
     </div>
   );
 }
@@ -112,8 +127,8 @@ export function Contact() {
               Parlons de votre projet.
             </h2>
             <p className="mt-7 max-w-md text-[1.05rem] leading-relaxed text-mist">
-              Disponible pour missions freelance, stages, CDI ou toute collaboration technique.
-              Réponse sous 24 h ouvrées.
+              Ouvert aux missions freelance, aux stages et aux postes en CDI. Je réponds en moins de
+              24 h ouvrées.
             </p>
 
             <ul className="mt-12 border-b border-line">

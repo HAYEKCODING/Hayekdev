@@ -18,7 +18,7 @@ export function Architecture() {
             Comment je conçois une application
           </h2>
           <p className="mt-5 text-[1.05rem] leading-relaxed text-mist">
-            Une approche full stack structurée, du premier écran jusqu'à la mise en ligne.
+            Cinq étapes, de la première maquette à la mise en ligne.
           </p>
         </div>
 
@@ -50,7 +50,12 @@ export function Architecture() {
               <span
                 key={step.title}
                 className="flow-station absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-line"
-                style={{ left: `${10 + 20 * i}%`, "--delay": `${(0.2 * i - 0.06) * CYCLE}s` } as React.CSSProperties}
+                style={
+                  {
+                    left: `${10 + 20 * i}%`,
+                    "--delay": `${(0.2 * i - 0.06) * CYCLE}s`,
+                  } as React.CSSProperties
+                }
               />
             ))}
             <span className="flow-packet absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-gold shadow-[0_0_24px_6px_rgb(245_180_27/0.55)]" />

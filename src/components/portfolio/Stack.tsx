@@ -12,8 +12,7 @@ export function Stack() {
         <div className="mb-16 max-w-2xl">
           <h2 className="h-section">Compétences et technologies</h2>
           <p className="mt-5 text-[1.05rem] leading-relaxed text-mist">
-            Un stack complet pour concevoir des applications robustes, de l'interface jusqu'à la
-            base de données.
+            Des outils que j'utilise chaque jour, de l'interface jusqu'à la base de données.
           </p>
         </div>
 
@@ -29,7 +28,11 @@ export function Stack() {
               </div>
               <ul className="flex flex-wrap content-start gap-x-8 gap-y-3">
                 {sk.items.map((item, i) => (
-                  <li key={item} className="flex items-center gap-3 text-[1.05rem]" style={{ "--i": i } as React.CSSProperties}>
+                  <li
+                    key={item}
+                    className="flex items-center gap-3 text-[1.05rem]"
+                    style={{ "--i": i } as React.CSSProperties}
+                  >
                     <span className="dia" style={{ "--i": i } as React.CSSProperties} />
                     {item}
                   </li>

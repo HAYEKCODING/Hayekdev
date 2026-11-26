@@ -1,15 +1,14 @@
 import { useEffect, useRef } from "react";
 import { ArrowDown, Download, FileText, Github, Linkedin } from "lucide-react";
 import avatar from "@/assets/portrait-neutral.jpg";
-import { CV, PROFILE, STATS, TYPED } from "@/data/portfolio";
+import { CV, HERO_STATEMENT, PROFILE, STATS } from "@/data/portfolio";
 import { WovenField } from "./WovenField";
 import { KineticName } from "./KineticName";
 import { Counter } from "./Counter";
 import { PortfolioDecorations } from "./PortfolioDecorations";
-import { useAbidjanTime, useMagnetic, useTyped } from "./hooks";
+import { useAbidjanTime, useMagnetic } from "./hooks";
 
 export function Hero() {
-  const typed = useTyped(TYPED);
   const time = useAbidjanTime();
   const ctaRef = useMagnetic<HTMLAnchorElement>();
   const portraitRef = useRef<HTMLDivElement | null>(null);
@@ -67,7 +66,7 @@ export function Hero() {
             style={{ "--d": "0.1s" } as React.CSSProperties}
           >
             <span className="dia text-gold" />
-            Développeur Fullstack
+            Développeur full stack
           </p>
 
           <KineticName
@@ -79,22 +78,15 @@ export function Hero() {
             className="hero-rise mt-9 min-h-[3.4rem] text-[1.35rem] font-medium leading-snug text-ivoire sm:text-[1.6rem] lg:min-h-[2.2rem]"
             style={{ "--d": "1.0s" } as React.CSSProperties}
           >
-            <span className="sr-only">
-              Je construis des applications web pour les PME et startups africaines.
-            </span>
-            <span aria-hidden>
-              Je construis {typed}
-              <span className="caret" />
-            </span>
+            {HERO_STATEMENT}
           </p>
 
           <p
             className="hero-rise mt-5 max-w-[34rem] text-[1.02rem] leading-relaxed text-mist"
             style={{ "--d": "1.15s" } as React.CSSProperties}
           >
-            React et Spring Boot côté code, MySQL et PostgreSQL côté données. Je livre des
-            applications complètes pour les PME et startups africaines, du premier écran à la mise
-            en ligne.
+            Je travaille avec React et Spring Boot pour l'interface et les API, et avec MySQL ou
+            PostgreSQL pour les données. Une seule personne, de la conception à la mise en ligne.
           </p>
 
           <div

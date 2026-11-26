@@ -13,7 +13,7 @@ import appCss from "../styles.css?url";
 import { reportApplicationError } from "../lib/error-reporting";
 import { PROFILE } from "@/data/portfolio";
 
-const DESCRIPTION = `${PROFILE.shortName}, développeur full stack et software engineer à ${PROFILE.city}, ${PROFILE.country}. Applications web modernes, APIs sécurisées et solutions sur mesure pour PME et startups.`;
+const DESCRIPTION = `${PROFILE.shortName}, développeur full stack à ${PROFILE.city}, ${PROFILE.country}. Je crée des applications web, des API sécurisées et des outils sur mesure pour les PME et les startups.`;
 const OG_IMAGE =
   "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/15bb3329-1777-4f92-bf52-3dc0192f5de9";
 
@@ -99,7 +99,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
   }),
   shellComponent: RootShell,

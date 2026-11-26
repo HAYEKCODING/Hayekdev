@@ -12,6 +12,9 @@ import { PROJECTS, type Project } from "@/data/portfolio";
 import { ProjectMock } from "./Mocks";
 import { PortfolioDecorations } from "./PortfolioDecorations";
 
+/** Temps d'affichage de chaque projet pendant le défilement automatique. */
+const AUTOPLAY_MS = 5000;
+
 const STATUS_STYLE: Record<Project["status"], string> = {
   "En cours": "project-status--progress",
   Livré: "project-status--delivered",
@@ -29,7 +32,7 @@ function Status({ status }: { status: Project["status"] }) {
 
 function Tags({ tags }: { tags: string[] }) {
   if (tags.length === 0) {
-    return <p className="project-tags-empty">Technologies non renseignées</p>;
+    return <p className="project-tags-empty">Technologies détaillées sur le site</p>;
   }
 
   return (
@@ -46,7 +49,22 @@ function ProjectPreview({ project, visible }: { project: Project; visible: boole
     return <div className="project-preview project-preview--placeholder" aria-hidden />;
   }
 
-  if (!project.live) {
+  if (project.image) {
+    return (
+      <div className="project-preview">
+        <img
+          src={project.image}
+          alt={`Capture d'écran du site ${project.name}`}
+          width={1280}
+          height={800}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    );
+  }
+
+  if (project.mock) {
     return (
       <ProjectMock
         kind={project.mock}
@@ -55,27 +73,16 @@ function ProjectPreview({ project, visible }: { project: Project; visible: boole
     );
   }
 
-  return (
-    <div className="project-preview">
-      <iframe
-        src={project.live}
-        title={`Aperçu de l'interface ${project.name}`}
-        loading="lazy"
-        referrerPolicy="no-referrer"
-      />
-    </div>
-  );
+  return <div className="project-preview project-preview--placeholder" aria-hidden />;
 }
 
-function DiscoverLink({ project, active }: { project: Project; active: boolean }) {
-  if (!active) {
-    return (
-      <span className="btn btn-primary project-discover" aria-hidden="true">
-        Découvrir le projet
-        <ArrowUpRight className="h-4 w-4" />
-      </span>
-    );
-  }
+function SiteLink({ project, active }: { project: Project; active: boolean }) {
+  const label = (
+    <>
+      Voir site
+      <ArrowUpRight className="h-4 w-4" />
+    </>
+  );
 
   if (!project.live) {
     return (
@@ -84,10 +91,18 @@ function DiscoverLink({ project, active }: { project: Project; active: boolean }
         className="btn btn-ghost project-discover"
         disabled
         aria-label={`${project.name} : aucune démo publique`}
+        tabIndex={active ? 0 : -1}
       >
-        Découvrir le projet
-        <ArrowUpRight className="h-4 w-4" />
+        {label}
       </button>
+    );
+  }
+
+  if (!active) {
+    return (
+      <span className="btn btn-primary project-discover" aria-hidden="true">
+        {label}
+      </span>
     );
   }
 
@@ -97,9 +112,9 @@ function DiscoverLink({ project, active }: { project: Project; active: boolean }
       target="_blank"
       rel="noreferrer"
       className="btn btn-primary project-discover"
+      aria-label={`Voir le site ${project.name} (nouvel onglet)`}
     >
-      Découvrir le projet
-      <ArrowUpRight className="h-4 w-4" />
+      {label}
     </a>
   );
 }
@@ -154,7 +169,7 @@ function ProjectCard({
       <div className="project-carousel-visual">
         <ProjectPreview project={project} visible={isActive || isAdjacent} />
         <p className="project-preview-caption">
-          {project.live ? "Aperçu de l'interface en ligne" : "Aperçu illustratif"}
+          {project.image ? "Capture d'écran du site" : "Aperçu illustratif"}
         </p>
       </div>
 
@@ -186,7 +201,7 @@ function ProjectCard({
         )}
         <Tags tags={project.tags} />
         <p className="project-carousel-role">{project.role}</p>
-        <DiscoverLink project={project} active={isActive} />
+        <SiteLink project={project} active={isActive} />
       </div>
     </article>
   );
@@ -194,11 +209,16 @@ function ProjectCard({
 
 export function Projects() {
   const [activeIndex, setActiveIndex] = useState(0);
+  /** À chaque interaction manuelle, on relance le minuteur pour laisser lire la carte. */
+  const [autoplayRun, setAutoplayRun] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isInView, setIsInView] = useState(false);
   const [isPageVisible, setIsPageVisible] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(true);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
   const activeCardRef = useRef<HTMLElement | null>(null);
   const total = PROJECTS.length;
 
@@ -217,14 +237,45 @@ export function Projects() {
     return () => mediaQuery.removeEventListener("change", updatePreference);
   }, []);
 
+  // Le carrousel ne défile que lorsqu'il est réellement à l'écran.
   useEffect(() => {
-    if (isHovered || !isPageVisible || prefersReducedMotion || total < 2) return;
+    const element = carouselRef.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(([entry]) => setIsInView(entry.isIntersecting), {
+      threshold: 0.35,
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  // Défilement automatique : en pause au survol, au clavier et hors écran.
+  useEffect(() => {
+    if (
+      isHovered ||
+      isFocused ||
+      !isInView ||
+      !isPageVisible ||
+      prefersReducedMotion ||
+      total < 2
+    ) {
+      return;
+    }
 
     const timeout = window.setTimeout(() => {
       setActiveIndex((index) => (index + 1) % total);
-    }, 4500);
+    }, AUTOPLAY_MS);
     return () => window.clearTimeout(timeout);
-  }, [activeIndex, isHovered, isPageVisible, prefersReducedMotion, total]);
+  }, [
+    activeIndex,
+    autoplayRun,
+    isHovered,
+    isFocused,
+    isInView,
+    isPageVisible,
+    prefersReducedMotion,
+    total,
+  ]);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -249,8 +300,13 @@ export function Projects() {
     };
   }, [activeIndex]);
 
+  function select(index: number) {
+    setActiveIndex((index + total) % total);
+    setAutoplayRun((run) => run + 1);
+  }
+
   function move(direction: number) {
-    setActiveIndex((index) => (index + direction + total) % total);
+    select(activeIndex + direction);
   }
 
   function handlePointerDown(event: PointerEvent<HTMLDivElement>) {
@@ -288,18 +344,25 @@ export function Projects() {
         <div className="mb-10 max-w-2xl sm:mb-14">
           <h2 className="h-section">Projets concrets</h2>
           <p className="mt-5 text-[1.05rem] leading-relaxed text-mist">
-            Des applications conçues de A à Z : interface soignée, logique métier solide et
-            technologies modernes.
+            Chaque projet répond à un besoin réel, avec une interface claire et une logique métier
+            solide.
           </p>
         </div>
 
         <div
+          ref={carouselRef}
           className="project-carousel"
           role="region"
           aria-roledescription="carrousel"
           aria-label="Projets concrets"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
+          onFocusCapture={() => setIsFocused(true)}
+          onBlurCapture={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+              setIsFocused(false);
+            }
+          }}
         >
           <div
             ref={stageRef}
@@ -322,7 +385,7 @@ export function Projects() {
                   key={project.name}
                   project={project}
                   offset={offset}
-                  onSelect={() => setActiveIndex(index)}
+                  onSelect={() => select(index)}
                   activeCardRef={activeCardRef}
                 />
               );
@@ -346,7 +409,7 @@ export function Projects() {
                   className={`project-carousel-dot${index === activeIndex ? " is-active" : ""}`}
                   aria-label={`Afficher ${project.name}`}
                   aria-current={index === activeIndex ? "true" : undefined}
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => select(index)}
                 />
               ))}
             </div>

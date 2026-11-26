@@ -43,13 +43,9 @@ export const NAV = [
   { href: "#contact", id: "contact", label: "Contact" },
 ];
 
-/** Phrases tapées dans le hero après « Je construis ». */
-export const TYPED = [
-  "des boutiques en ligne.",
-  "des plateformes de santé.",
-  "des outils de gestion pour PME.",
-  "des APIs REST fiables.",
-];
+/** Phrase unique affichée dans le hero, après « Je construis ». */
+export const HERO_STATEMENT =
+  "Je conçois et développe des applications web, de l'idée jusqu'à la mise en ligne.";
 
 export const STATS = [
   { value: 6, label: "projets construits" },
@@ -74,17 +70,17 @@ export const MARQUEE = [
 ];
 
 export const ABOUT = {
-  title: "Un développeur full stack rigoureux, tourné vers la qualité et la livraison.",
-  lead: "Développeur d'applications diplômé d'une Licence en Informatique Décisionnelle, à l'aise en développement web et mobile, avec de bonnes bases en modélisation de données.",
+  title: "Un développeur full stack, attaché au code propre et aux projets qui aboutissent.",
+  lead: "Je suis développeur d'applications, diplômé d'une Licence en Informatique Décisionnelle. Je crée des sites et des applications mobiles, et je m'appuie sur de bonnes bases en modélisation de données.",
   paragraphs: [
-    "Je cherche aujourd'hui à rejoindre une équipe où je pourrai renforcer mes compétences en développement full-stack et contribuer à des projets concrets. Curieux, j'apprends vite et j'aime travailler en équipe.",
-    "J'ai fait mes premières armes en entreprise chez Synelia Group Africa, comme stagiaire développeur backend. J'y ai découvert le rythme agile, la revue de code et la livraison continue, des pratiques que j'applique désormais sur chacun de mes projets.",
-    "Aujourd'hui, je collabore avec des entrepreneurs, PME et startups africaines pour transformer leurs idées en produits numériques exploitables : e-commerce, plateformes e-learning, applications HealthTech, outils métier sur mesure.",
+    "Je souhaite aujourd'hui rejoindre une équipe produit pour progresser en développement full stack et contribuer à des projets utiles. Curieux et autonome, j'apprends vite et je m'intègre facilement.",
+    "J'ai débuté chez Synelia Group Africa, comme stagiaire développeur backend. J'y ai appris les méthodes agiles, la revue de code et la livraison continue, trois habitudes que j'applique à chaque projet.",
+    "J'accompagne aujourd'hui des entrepreneurs, des PME et des startups africaines. Ensemble, nous transformons une idée en produit numérique utilisable : site e-commerce, plateforme e-learning ou outil métier sur mesure.",
   ],
   values: [
-    { title: "Rigueur", text: "Code propre, testé, documenté" },
-    { title: "Livraison", text: "Livraisons régulières, retours courts" },
-    { title: "Impact", text: "Solutions pensées pour l'usage réel" },
+    { title: "Rigueur", text: "Un code lisible, testé et documenté" },
+    { title: "Livraison", text: "Des versions régulières, par petites étapes" },
+    { title: "Impact", text: "Des solutions pensées pour l'usage réel" },
   ],
   /** Petits repères personnels, tirés du CV (centres d'intérêt, langues). */
   interests: ["Développement web & mobile", "Cybersécurité & IA", "Lecture technique"],
@@ -97,7 +93,7 @@ export const ABOUT = {
 /** Lignes du petit terminal de la section « À propos » — un détail de développeur, sans excès. */
 export const STATUS_LINES = [
   { cmd: "whoami", out: "mouhammad — développeur full stack, Bouaké 🇨🇮" },
-  { cmd: "cat formation.txt", out: "Licence Informatique Décisionnelle · HETEC · 2025–2026" },
+  { cmd: "cat formation.txt", out: "Licence Informatique Décisionnelle · BTS IDA · HETEC" },
   { cmd: "cat interets.txt", out: "cybersécurité · ia · lecture technique" },
   { cmd: "status", out: "ouvert aux missions" },
 ];
@@ -105,7 +101,7 @@ export const STATUS_LINES = [
 export const SKILLS = [
   {
     label: "Développement web",
-    title: "Interface et web",
+    title: "Interfaces et sites web",
     items: ["HTML5", "CSS3", "PHP", "React.js", "Spring Boot", "Tailwind CSS"],
   },
   {
@@ -153,10 +149,13 @@ export interface Project {
   role: string;
   tags: string[];
   status: "En cours" | "Livré" | "Expérience pro";
-  /** Lien du projet en ligne (optionnel) : un bouton « Voir le site » apparaît. */
+  /** Lien du projet en ligne (optionnel) : un bouton « Voir site » apparaît. */
   live?: string;
   featured?: boolean;
-  mock: MockKind;
+  /** Capture d'écran du site, servie depuis public/projects. */
+  image?: string;
+  /** Illustration de secours, utilisée quand aucune capture n'est disponible. */
+  mock?: MockKind;
 }
 
 export const PROJECTS: Project[] = [
@@ -164,69 +163,72 @@ export const PROJECTS: Project[] = [
     name: "PharmaCi",
     short: "Pharmacies ouvertes, médicaments et comparaison des prix",
     type: "HealthTech · application web",
-    desc: "Assistant santé pour trouver des pharmacies ouvertes, vérifier la disponibilité des médicaments et comparer les prix en Côte d'Ivoire.",
+    desc: "Une application qui aide à trouver une pharmacie ouverte, vérifier si un médicament est disponible et comparer les prix en Côte d'Ivoire.",
     problem:
-      "En Côte d'Ivoire, savoir si une pharmacie a un médicament en stock oblige souvent à appeler ou à se déplacer plusieurs fois, sans certitude de le trouver.",
+      "Savoir si une pharmacie a un médicament en stock demande souvent plusieurs appels, parfois plusieurs déplacements, sans être sûr de le trouver.",
     solution:
-      "PharmaCi aide les patients à trouver des pharmacies ouvertes, vérifier les stocks et comparer les prix avant de se déplacer.",
+      "PharmaCi réunit les pharmacies ouvertes, les stocks et les prix au même endroit, pour éviter les déplacements inutiles.",
     features: [
-      "Recherche de médicaments par nom",
-      "Consultation de la disponibilité en temps réel par pharmacie",
-      "Recherche de pharmacies ouvertes et comparaison des prix",
+      "Rechercher un médicament par son nom",
+      "Voir sa disponibilité dans chaque pharmacie",
+      "Trouver une pharmacie ouverte et comparer les prix",
     ],
-    role: "Conception et développement complet : interface React, API Spring Boot, base de données MySQL.",
+    role: "Conception et développement complets : interface React, API Spring Boot et base MySQL.",
     tags: ["React", "Spring Boot", "MySQL", "Tailwind"],
     status: "En cours",
     live: "https://pharmacie-ci.base44.app",
     featured: true,
+    image: "/projects/pharmaci.jpg",
     mock: "pharma",
   },
   {
     name: "Chic Ivoire Boutique",
     short: "Mode féminine ivoirienne",
     type: "E-commerce",
-    desc: "Boutique en ligne dédiée à la mode féminine ivoirienne.",
+    desc: "Une boutique en ligne consacrée à la mode féminine ivoirienne.",
     problem:
-      "Les créatrices de mode locale manquent souvent d'une vitrine en ligne pensée pour leur catalogue et leur clientèle.",
+      "Les créatrices de mode locales manquent souvent d'une vitrine en ligne à la hauteur de leur catalogue.",
     solution:
-      "Chic Ivoire propose une boutique en ligne complète, du catalogue au paiement, adaptée au marché ivoirien.",
+      "Chic Ivoire met en ligne une boutique complète, du catalogue au paiement, pensée pour le marché ivoirien.",
     features: [
-      "Catalogue de produits par catégorie",
-      "Panier et gestion des commandes",
-      "Intégration de paiement adaptée au marché local",
+      "Catalogue organisé par catégories",
+      "Panier et suivi des commandes",
+      "Paiement adapté au marché local",
     ],
-    role: "Développement complet de la boutique, du catalogue jusqu'au paiement.",
+    role: "Développement de la boutique de bout en bout, du catalogue au paiement.",
     tags: ["Next.js", "Tailwind", "MySQL"],
     status: "Livré",
     live: "https://chic-ivoire-boutique.lovable.app",
+    image: "/projects/chic-ivoire.jpg",
     mock: "shop",
   },
   {
     name: "CampusLink",
     short: "Le réseau éducatif des étudiants",
     type: "Éducation · réseau étudiant",
-    desc: "Plateforme qui aide les étudiants à trouver des binômes de révision, des partenaires d'étude et des contacts sur leur campus.",
+    desc: "Une plateforme qui aide les étudiants à trouver un binôme de révision, un partenaire d'étude ou un contact sur leur campus.",
     problem:
-      "Les étudiants ont parfois du mal à trouver des binômes de révision et des partenaires d'étude sur leur campus.",
+      "Sur un même campus, il reste difficile de trouver un binôme de révision ou un partenaire d'étude.",
     solution:
-      "CampusLink met en relation les étudiants et facilite la recherche de partenaires d'étude et de contacts sur le campus.",
+      "CampusLink met les étudiants en relation et facilite la création de groupes de révision.",
     features: [
-      "Recherche de binômes de révision",
-      "Partenaires d'étude",
-      "Contacts sur son campus",
+      "Trouver un binôme de révision",
+      "Rencontrer des partenaires d'étude",
+      "Créer des contacts sur le campus",
     ],
     role: "Conception et développement de la plateforme.",
     tags: [],
     status: "Livré",
     live: "https://campuslink-olive.vercel.app/",
+    image: "/projects/campuslink.jpg",
     mock: "school",
   },
   {
     name: "Applications backend Synelia",
     short: "Applications métier",
     type: "Backend · expérience professionnelle",
-    desc: "Contributions à l'équipe backend de Synelia Group Africa.",
-    role: "Développement de fonctionnalités, correction de bugs et maintenance évolutive au sein de l'équipe backend, en environnement agile.",
+    desc: "Mon travail au sein de l'équipe backend de Synelia Group Africa.",
+    role: "J'ai développé des fonctionnalités métier, corrigé des bugs et participé à la maintenance de l'application, en méthode agile.",
     features: [
       "Développement de fonctionnalités métier",
       "Correction de bugs",
@@ -240,18 +242,19 @@ export const PROJECTS: Project[] = [
     name: "Bernabe RH",
     short: "Gestion des ressources humaines",
     type: "Application métier · RH",
-    desc: "Application web de gestion des ressources humaines.",
-    role: "Conception et développement de la plateforme RH.",
+    desc: "Une application web pour gérer les ressources humaines d'une entreprise.",
+    role: "Conception et développement de la plateforme, de la base de données à l'interface.",
     tags: [],
     status: "Livré",
     live: "https://bernabe-rh.onrender.com/login",
+    image: "/projects/bernabe-rh.jpg",
     mock: "api",
   },
   {
     name: "Bernice Parfumerie",
     short: "Parfums et montres de luxe",
     type: "E-commerce · parfumerie",
-    desc: "Boutique en ligne de parfums et de montres, avec prix en FCFA, commande par WhatsApp et livraison en Côte d'Ivoire.",
+    desc: "Une boutique en ligne de parfums et de montres : prix en FCFA, commande par WhatsApp et livraison en Côte d'Ivoire.",
     features: [
       "Catalogue de parfums et de montres",
       "Commande par WhatsApp",
@@ -261,6 +264,7 @@ export const PROJECTS: Project[] = [
     tags: [],
     status: "Livré",
     live: "https://bernices-boutique-bliss.lovable.app",
+    image: "/projects/bernice.jpg",
     mock: "shop",
   },
 ];
@@ -279,29 +283,22 @@ export const EXPERIENCE: TimelineItem[] = [
     date: "2024 à aujourd'hui",
     role: "Développeur d'applications, projets personnels",
     org: "Freelance et apprentissage",
-    desc: "Conception et développement d'applications web et mobiles : PharmaCi, Chic Ivoire, CampusLink, Bernabe RH et Bernice Parfumerie. Modélisation Merise/UML, API REST, intégration base de données.",
+    desc: "Je conçois et développe des applications web et mobiles, pour des clients comme pour mes propres projets : PharmaCi, Chic Ivoire, CampusLink, Bernabe RH et Bernice Parfumerie. Modélisation Merise et UML, API REST, bases de données.",
     tags: ["React", "Flutter", "PHP", "Spring Boot"],
   },
   {
     date: "Avril à juin 2026",
     role: "Stagiaire développeur",
     org: "ONG Amour Divin",
-    desc: "Conception et développement de PharmaCi, plateforme de disponibilités et de réservation de médicaments pour les pharmacies.",
+    desc: "J'ai conçu et développé PharmaCi, une plateforme qui montre les médicaments disponibles en pharmacie et permet de les réserver.",
     tags: ["HealthTech", "React", "Spring Boot"],
   },
   {
     date: "Août à octobre 2025",
     role: "Stagiaire, équipe backend",
     org: "Synelia Group Africa",
-    desc: "Participation au développement et à la maintenance d'applications web métier, en collaboration avec l'équipe backend. Contribution à l'amélioration des performances, correction de bugs et maintenance évolutive.",
+    desc: "J'ai développé et maintenu des applications web métier avec l'équipe backend : nouvelles fonctionnalités, correction de bugs et amélioration des performances.",
     tags: ["Java", "Spring Boot", "MySQL", "Git"],
-  },
-  {
-    date: "2024 à 2025",
-    role: "Membre du bureau exécutif",
-    org: "HETEC Bouaké · Réseau des Jeunes Dynamiques",
-    desc: "Adjoint du secrétaire de l'urbanisation du Réseau des Jeunes Dynamiques de Bouaké. Engagement associatif, coordination et communication.",
-    tags: ["Leadership", "Communication"],
   },
 ];
 
@@ -310,22 +307,45 @@ export const EDUCATION: TimelineItem[] = [
     date: "2025 à 2026",
     role: "Licence en Informatique Décisionnelle",
     org: "HETEC, Côte d'Ivoire",
-    desc: "Business Intelligence, exploitation et valorisation des données, outils décisionnels (Power BI), conception de systèmes d'information orientés pilotage.",
+    desc: "Business Intelligence et analyse de données : tableaux de bord Power BI, SQL et conception de systèmes d'information pour le pilotage.",
     tags: ["Power BI", "SQL", "Data", "POO", "UML"],
   },
   {
     date: "2024 à 2025",
-    role: "Licence 2 / BTS Développeur d'Applications",
+    role: "BTS en Informatique Développeur d'Applications (IDA)",
     org: "HETEC, Côte d'Ivoire",
-    desc: "Développement web (PHP/JS), bases de données sécurisées, modélisation Merise (MCD/MLD), conception de systèmes d'information et méthodes agiles.",
+    desc: "Développement web en PHP et JavaScript, bases de données, modélisation Merise (MCD/MLD) et méthodes agiles.",
     tags: ["PHP", "MySQL", "Merise"],
   },
+];
+
+export interface Certification {
+  title: string;
+  /** Date d'obtention, telle qu'elle figure sur le certificat. */
+  date: string;
+  /** Domaine de la formation, affiché en surtitre. */
+  area: string;
+  /** Numéro de certificat, quand il est fourni. */
+  id?: string;
+}
+
+/** Triées de la plus récente à la plus ancienne. */
+export const CERTIFICATIONS: Certification[] = [
   {
-    date: "2023 à 2024",
-    role: "Licence 1 MIAGE",
-    org: "Université Polytechnique de Bingerville",
-    desc: "Fondamentaux : algorithmique, programmation orientée objet (Java/Python), conception web, normalisation SQL et bases de la gestion de projet.",
-    tags: ["Java", "Python", "SQL", "Algo"],
+    title: "Débutez votre parcours DevOps avec Docker",
+    date: "9 octobre 2026",
+    area: "DevOps · Docker",
+  },
+  {
+    title: "Boostez votre valeur en entreprise avec Java & Spring Boot",
+    date: "8 octobre 2026",
+    area: "Java · Spring Boot",
+  },
+  {
+    title: "L'IA pour tous",
+    date: "16 août 2026",
+    area: "Intelligence artificielle",
+    id: "SKA4402827081620261311",
   },
 ];
 
@@ -340,26 +360,26 @@ export const ARCHITECTURE = [
 export const SERVICES = [
   {
     title: "Sites web professionnels",
-    desc: "Landing pages, portfolios et sites vitrine au design soigné et aux performances optimisées.",
+    desc: "Sites vitrine, portfolios et landing pages : un design soigné et des pages qui chargent vite.",
   },
   {
     title: "Applications métier",
-    desc: "Systèmes de gestion, tableaux de bord d'administration et outils internes sur mesure pour les PME.",
+    desc: "Outils de gestion, tableaux de bord et logiciels internes sur mesure pour les PME.",
   },
   {
     title: "APIs REST",
-    desc: "Conception et développement d'APIs sécurisées, documentées et prêtes à évoluer.",
+    desc: "Des API sécurisées et documentées, prêtes à évoluer avec votre produit.",
   },
   {
     title: "Plateformes e-learning",
-    desc: "Plateformes complètes avec gestion des cours, des étudiants, des paiements et des certifications.",
+    desc: "Cours, étudiants, paiements et certificats réunis dans une même plateforme.",
   },
   {
     title: "E-commerce",
-    desc: "Boutiques en ligne avec catalogue, panier et paiement Mobile Money adapté à la Côte d'Ivoire.",
+    desc: "Boutiques en ligne avec catalogue, panier et paiement Mobile Money, adaptées à la Côte d'Ivoire.",
   },
   {
     title: "Applications d'entreprise",
-    desc: "ERP léger, gestion RH, comptabilité et facturation adaptés au marché africain.",
+    desc: "Gestion RH, comptabilité et facturation : des outils simples, pensés pour le marché africain.",
   },
 ];
